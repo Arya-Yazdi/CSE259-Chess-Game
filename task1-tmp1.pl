@@ -2,8 +2,11 @@
 
 main :-
     init_board(Board), % Initialize board with starting position.
-    draw_board(8,8, Board).
+    print_board(Board).
 main.
+
+print_board(Board) :-
+    draw_board(8, 8, Board).
 
 % Base case. Prints the last row of the grid, including  file characters at the very bottom.
 draw_board(0, Col, Board) :- drawSymbol(' ', 1), % Print space before start of bottom line in grid.
@@ -62,8 +65,7 @@ draw_content_cell(Line, C, Board):- C>0,
                              draw_content_cell(Line, C1, Board).
 
 % Draws all File characters.
-draw_pair:- 
-            drawSymbol(' ', 4),
+draw_pair:- drawSymbol(' ', 4),
             drawSymbol('a', 1),
             drawSymbol(' ', 4),
             drawSymbol('b', 1),
