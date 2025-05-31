@@ -35,7 +35,7 @@ draw_content_line(Line, Col, Board):- drawSymbol(Line, 1),
                                nl.
 
 
-draw_cell(Board, Line, Col):- pair(Name, Col),
+draw_cell(Line, Col, Board):- pair(Name, Col),
                               mymember(piece(Name-Line, Color, Piece), Board),
                               drawSymbol(' ', 1),
                               (
@@ -47,7 +47,7 @@ draw_cell(Board, Line, Col):- pair(Name, Col),
                               drawSymbol(' ', 1).
 
 % Function draws content inside of each square. Prints blank (4 spaces) when square has no pieces. 
-draw_cell(Board, Line, Col):- pair(Name, Col),
+draw_cell(Line, Col, Board):- pair(Name, Col),
                               \+ (mymember(piece(Name-Line, Color, Piece), Board)),
                               drawSymbol(' ', 4).
 
@@ -56,7 +56,7 @@ draw_content_cell(Line, 0, Board):- drawSymbol('|', 1).
 draw_content_cell(Line, C, Board):- C>0,
                              drawSymbol('|', 1),
                              % drawSymbol(' ', 4),
-                             draw_cell(Board, Line, C),
+                             draw_cell(Line, C, Board),
                              C1 is C-1,
                              draw_content_cell(Line, C1, Board).
 
