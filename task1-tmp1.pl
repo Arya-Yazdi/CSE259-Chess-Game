@@ -1,7 +1,7 @@
 % Code only focuses on Task 1 (printing the chess board) of the chess game. 
 
 main :-
-    init_board(Board),
+    init_board(Board), % Initialize board with starting position.
     draw_board(8,8, Board).
 main.
 
@@ -11,6 +11,7 @@ draw_board(0, Col, Board) :- drawSymbol(' ', 1), % Print space before start of b
                       nl,
                       draw_pair. % Prints file characters (a, b, c, d ...)
 
+% Prints each row of the chess board (except the last, which is handled by the base case).
 draw_board(Line, Col, Board):- Line > 0, % Print space below "1" in grid
                         drawSymbol(' ',1), % Print space before start of top line in grid
                         draw_up_bot_border(Col), % Draw horizonta line grid.
@@ -34,21 +35,21 @@ draw_content_line(Line, Col, Board):- drawSymbol(Line, 1),
                                draw_content_cell(Line, Col, Board),
                                nl.
 
-
-draw_cell(Line, Col, Board):- pair(Name, Col),
-                              mymember(piece(Name-Line, Color, Piece), Board),
+% Function draws content inside of each square. Prints abbreviated piece name and * if piece color is black. 
+draw_cell(Line, Col, Board):- pair(Name, Col), % Get file name of given column.
+                              mymember(piece(Name-Line, Color, Piece), Board), % Check if piece is still on the board...
                               drawSymbol(' ', 1),
                               (
                                 (Color == black, drawSymbol('*', 1)); % Print * to indicate piece is black.
                                 (Color == white, drawSymbol(' ', 1))  % Don't print anything for white pieces.
                               ),
-                              pair(Piece, Cap),
+                              pair(Piece, Cap), % find abbreviation of piece name.
                               drawSymbol(Cap, 1),
                               drawSymbol(' ', 1).
 
 % Function draws content inside of each square. Prints blank (4 spaces) when square has no pieces. 
-draw_cell(Line, Col, Board):- pair(Name, Col),
-                              \+ (mymember(piece(Name-Line, Color, Piece), Board)),
+draw_cell(Line, Col, Board):- pair(Name, Col), % Get file name of given column.
+                              \+ (mymember(piece(Name-Line, Color, Piece), Board)), % \+ means negation. If piece is not on board...
                               drawSymbol(' ', 4).
 
 % Draws left right grid lines and content of the given grid spot. 
@@ -56,7 +57,7 @@ draw_content_cell(Line, 0, Board):- drawSymbol('|', 1).
 draw_content_cell(Line, C, Board):- C>0,
                              drawSymbol('|', 1),
                              % drawSymbol(' ', 4),
-                             draw_cell(Line, C, Board),
+                             draw_cell(Line, C, Board), % Draw actual content inside the square.
                              C1 is C-1,
                              draw_content_cell(Line, C1, Board).
 
@@ -114,6 +115,7 @@ drawSymbol(Symbol, N) :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Code below is taken from chess.pl %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Function to check if element is in a given list
 mymember(X, [X|_]).
 mymember(X, [_|L]) :-
 	mymember(X, L).
